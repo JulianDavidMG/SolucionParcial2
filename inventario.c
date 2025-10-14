@@ -109,3 +109,25 @@ void insert_end(struct Node** head) {
     }
     printf("Producto insertado al final.\n");
 }
+
+struct Node* find_by_id(struct Node* head, int id) {
+    struct Node* cur = head;
+    while (cur) {
+        if (cur->id == id) return cur;
+        cur = cur->next;
+    }
+    return NULL;
+}
+
+void update_stock(struct Node* head) {
+    int id = read_int("ID a actualizar: ");
+    struct Node* p = find_by_id(head, id);
+    if (!p) {
+        printf("No existe producto con ID %d\n", id);
+        return;
+    }
+    printf("Producto encontrado: %s (stock actual: %d)\n", p->name, p->stock);
+    int change = read_int("Nuevo stock (valor entero, reemplaza el anterior): ");
+    p->stock = change;
+    printf("Stock actualizado.\n");
+}
