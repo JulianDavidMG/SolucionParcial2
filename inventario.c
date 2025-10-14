@@ -171,3 +171,71 @@ void list_all(struct Node* head) {
         cur = cur->next;
     }
 }
+
+void free_list(struct Node** head) {
+    struct Node* cur = *head;
+    while (cur) {
+        struct Node* tmp = cur;
+        cur = cur->next;
+        free(tmp);
+    }
+    *head = NULL;
+}
+
+//INPUT HELPERS
+
+void read_line(char* buffer, size_t size) {
+    if (!fgets(buffer, (int)size, stdin)) {
+        // EOF o error
+        buffer[0] = '\0';
+        return;
+    }
+    // eliminar '\n'
+    size_t len = strlen(buffer);
+    if (len > 0 && buffer[len-1] == '\n') buffer[len-1] = '\0';
+}
+
+int read_int(const char* prompt) {
+    char line[128];
+    long val;
+    char* endptr;
+    while (1) {
+        if (prompt && prompt[0]) printf("%s", prompt);
+        if (!fgets(line, sizeof(line), stdin)) {
+            printf("\nEntrada no leida. Intentelo de nuevo.\n");
+            clearerr(stdin);
+            continue;
+        }
+        // eliminar espacios iniciales
+        char* p = line;
+        while (isspace((unsigned char)*p)) p++;
+        if (*p == '\0') {
+            printf("Entrada vacia. Ingrese un numero.\n");
+            continue;
+        }
+        val = strtol(p, &endptr, 10);
+        if (p == endptr) {
+            printf("Por favor ingresa un numero entero valido.\n");
+            continue;
+        }
+        //ok
+        return (int)val;
+    }
+}
+
+void read_string(const char* prompt, char* buffer, size_t size) {
+    while (1) {
+        if (prompt && prompt[0]) printf("%s", prompt);
+        read_line(buffer, size);
+        if (buffer[0] == '\0') {
+            printf("No puede estar vacio. Intente de nuevo.\n");
+            continue;
+        }
+        break;
+    }
+}
+
+void clear_stdin(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
