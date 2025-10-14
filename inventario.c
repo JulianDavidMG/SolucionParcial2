@@ -48,3 +48,64 @@ int main(void) {
 
     return 0;
 }
+
+
+
+
+struct Node* create_node(int id, const char* name, int stock) {
+    struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+    if (!n) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    n->id = id;
+    strncpy(n->name, name, sizeof(n->name)-1);
+    n->name[sizeof(n->name)-1] = '\0';
+    n->stock = stock;
+    n->next = NULL;
+    return n;
+}
+
+int id_exists(struct Node* head, int id) {
+    struct Node* cur = head;
+    while (cur) {
+        if (cur->id == id) return 1;
+        cur = cur->next;
+    }
+    return 0;
+}
+
+void insert_front(struct Node** head) {
+    int id = read_int("ID: ");
+    if (id_exists(*head, id)) {
+        printf("Error: Ya existe un producto con ID %d\n", id);
+        return;
+    }
+    char name[40];
+    read_string("Nombre: ", name, sizeof(name));
+    int stock = read_int("Stock inicial: ");
+    struct Node* n = create_node(id, name, stock);
+    n->next = *head;
+    *head = n;
+    printf("Producto insertado al inicio.\n");
+}
+
+void insert_end(struct Node** head) {
+    int id = read_int("ID: ");
+    if (id_exists(*head, id)) {
+        printf("Error: Ya existe un producto con ID %d\n", id);
+        return;
+    }
+    char name[40];
+    read_string("Nombre: ", name, sizeof(name));
+    int stock = read_int("Stock inicial: ");
+    struct Node* n = create_node(id, name, stock);
+    if (!*head) {
+        *head = n;
+    } else {
+        struct Node* cur = *head;
+        while (cur->next) cur = cur->next;
+        cur->next = n;
+    }
+    printf("Producto insertado al final.\n");
+}
