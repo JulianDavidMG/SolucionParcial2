@@ -1,0 +1,16 @@
+# binarios
+*.exe
+*.out
+*.o
+inventory
+inventory.exe
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*~ 
+
+# logs/build
+build/
+dist/
