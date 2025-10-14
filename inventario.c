@@ -131,3 +131,43 @@ void update_stock(struct Node* head) {
     p->stock = change;
     printf("Stock actualizado.\n");
 }
+
+void delete_by_id(struct Node** head) {
+    if (!*head) {
+        printf("Inventario vacio.\n");
+        return;
+    }
+    int id = read_int("ID a eliminar: ");
+    struct Node* cur = *head;
+    struct Node* prev = NULL;
+    while (cur) {
+        if (cur->id == id) break;
+        prev = cur;
+        cur = cur->next;
+    }
+    if (!cur) {
+        printf("No existe producto con ID %d\n", id);
+        return;
+    }
+    if (!prev) {
+        // eliminar cabeza
+        *head = cur->next;
+    } else {
+        prev->next = cur->next;
+    }
+    free(cur);
+    printf("Producto con ID %d eliminado.\n", id);
+}
+
+void list_all(struct Node* head) {
+    if (!head) {
+        printf("Inventario vacio.\n");
+        return;
+    }
+    printf("\n--- Inventario completo ---\n");
+    struct Node* cur = head;
+    while (cur) {
+        printf("ID: %d | Nombre: %s | Stock: %d\n", cur->id, cur->name, cur->stock);
+        cur = cur->next;
+    }
+}
