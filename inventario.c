@@ -10,6 +10,7 @@ struct Node {
     struct Node* next;
 };
 
+// Prototipos
 struct Node* create_node(int id, const char* name, int stock);
 int id_exists(struct Node* head, int id);
 void insert_front(struct Node** head);
@@ -20,6 +21,7 @@ void delete_by_id(struct Node** head);
 void list_all(struct Node* head);
 void free_list(struct Node** head);
 
+// Helpers de entrada
 void read_line(char* buffer, size_t size);
 int read_int(const char* prompt);
 void read_string(const char* prompt, char* buffer, size_t size);
@@ -41,6 +43,36 @@ int main(void) {
         option = read_int("Elige una opcion: ");
 
         switch (option) {
+            case 1:
+                insert_front(&head);
+                break;
+            case 2:
+                insert_end(&head);
+                break;
+            case 3: {
+                int id = read_int("ID a buscar: ");
+                struct Node* p = find_by_id(head, id);
+                if (p) {
+                    printf("Producto encontrado:\n");
+                    printf("ID: %d\nNombre: %s\nStock: %d\n", p->id, p->name, p->stock);
+                } else {
+                    printf("No existe producto con ID %d\n", id);
+                }
+                break;
+            }
+            case 4:
+                update_stock(head);
+                break;
+            case 5:
+                delete_by_id(&head);
+                break;
+            case 6:
+                list_all(head);
+                break;
+            case 0:
+                printf("Saliendo... liberando memoria.\n");
+                free_list(&head);
+                break;
             default:
                 printf("Opcion no valida. Intenta de nuevo.\n");
         }
@@ -49,8 +81,7 @@ int main(void) {
     return 0;
 }
 
-
-
+//Implementaciones
 
 struct Node* create_node(int id, const char* name, int stock) {
     struct Node* n = (struct Node*)malloc(sizeof(struct Node));
@@ -218,7 +249,7 @@ int read_int(const char* prompt) {
             printf("Por favor ingresa un numero entero valido.\n");
             continue;
         }
-        //ok
+        // ok
         return (int)val;
     }
 }
